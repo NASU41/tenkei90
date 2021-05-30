@@ -9,3 +9,6 @@
 
 現在作成済問題番号:
 002
+
+## 使用ライブラリについて
+本リポジトリで公開するコードには, [ACLforJava](https://github.com/NASU41/AtCoderLibraryForJava)の機能が用いられることが予想されます. ライブラリの機能についてはこちらもご覧ください.
