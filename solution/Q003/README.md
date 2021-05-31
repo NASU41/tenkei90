@@ -1,9 +1,9 @@
-# 049 Flip Digits 2
+# Q003 Longest Circular Road
 
 ## 解法
-いわゆる「解説AC」なので, 詳細な内容については[公式解説](https://github.com/E869120/kyopro_educational_90/blob/main/editorial/049.jpg)を参照してください.
+考察ルートなど詳細な内容については[公式解説](https://github.com/E869120/kyopro_educational_90/blob/main/editorial/003.jpg)を参照してください.
 
-要するに, 問題をよく読んで解釈しなおすと「最小全域木問題」に帰着できるという話です.
+要するに, 問題をよく読んで解釈しなおすと「ダイクストラ法」2回に帰着できるという話です.
 
 ## 実装
 この問題を解くために, 重み付きグラフを表現するクラスを実装しました.
@@ -17,4 +17,4 @@
 近日中に行う予定なのでそれまではバグがあっても怒らないでください.
 (なおその際は[NASU41](twitter.com/skkytkstexhk) まで連絡してもらえると非常にありがたいです)
 
-本クラスは [問題003](https://github.com/NASU41/tenkei90/tree/main/solution/Q003)と共有されています. そちらも参照してください.
+本クラスは [問題049](https://github.com/NASU41/tenkei90/tree/main/solution/Q049)と共有されています. そちらも参照してください.
