@@ -12,7 +12,7 @@
 ## テクニック
 15-16行目についての説明です.
 
-https://github.com/NASU41/tenkei90/blob/a92a6b4d81bda1a552fdc4ab2c34062d319d374d/solution/Q007/Main.java#L15-L16
+https://github.com/NASU41/tenkei90/blob/bf8ba2283ccb56f7ca867249206494ea2a653734/solution/Q007/Main.java#L15-L16
 
 「`B[q]`がどの塾のレートよりも低い(あるいは高い)」というようなケースが存在します. 
 入力で与えられた配列$A$をそのまま`TreeSet`に変換して調査を行っていると, そのようなケースで返ってくるnullに個別で対応しなくてはならないのでなかなか面倒です.
