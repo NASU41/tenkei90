@@ -1,0 +1,4 @@
+URL: https://atcoder.jp/contests/typical90/submissions/23176231
+size: 10755 Byte
+time: 237 ms
+solution: not supposed
