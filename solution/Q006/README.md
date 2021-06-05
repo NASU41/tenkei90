@@ -1,4 +1,4 @@
-# Q007 CP classes
+# Q006 Smallest Subsequence
 
 ## 解法
 基本的な方針としては, 公式解と同様の貪欲法です. 
