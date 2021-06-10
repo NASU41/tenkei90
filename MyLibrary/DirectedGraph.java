@@ -14,7 +14,7 @@ class DirectedGraph{
         public long getLength(){return length;}
 
         public int compareTo(Edge o){
-            return Comparator.comparingLong(Edge::getLength)
+            return java.util.Comparator.comparingLong(Edge::getLength)
                    .thenComparingInt(Edge::getFrom)
                    .thenComparingInt(Edge::getTo).compare(this, o);
         }
@@ -25,17 +25,17 @@ class DirectedGraph{
 
     private int V;
     private int E;
-    private List<Edge>[] in, out;
-    private List<Edge> allEdge;
+    private java.util.List<Edge>[] in, out;
+    private java.util.List<Edge> allEdge;
 
     public DirectedGraph(int V){
         this.V = V;
         this.E = 0;
-        in = new ArrayList[V];
-        out = new ArrayList[V];
-        for(int v=0; v<V; v++) in[v] = new ArrayList<>();
-        for(int v=0; v<V; v++) out[v] = new ArrayList<>();
-        allEdge = new ArrayList<>();
+        in = new java.util.ArrayList[V];
+        out = new java.util.ArrayList[V];
+        for(int v=0; v<V; v++) in[v] = new java.util.ArrayList<>();
+        for(int v=0; v<V; v++) out[v] = new java.util.ArrayList<>();
+        allEdge = new java.util.ArrayList<>();
     }
 
     public void addEdge(int from, int to, long length){
@@ -49,21 +49,21 @@ class DirectedGraph{
         addEdge(from, to, 1);
     }
 
-    public List<Edge> outEdges(int v){
+    public java.util.List<Edge> outEdges(int v){
         return out[v];
     }
-    public List<Integer> outNeighbours(int v){
-        ArrayList<Integer> ans = new ArrayList<>();
+    public java.util.List<Integer> outNeighbours(int v){
+        java.util.ArrayList<Integer> ans = new java.util.ArrayList<>();
         for(Edge e: outEdges(v)) ans.add(e.getTo());
         return ans;
     }
 
-    public List<Edge> getAllEdges(){return allEdge;}
+    public java.util.List<Edge> getAllEdges(){return allEdge;}
 
     public long[] dijkstra(int start){
         long[] ans = new long[V];
-        Arrays.fill(ans, INF);
-        PriorityQueue<Pair<Long,Integer>> queue = new PriorityQueue<>();
+        java.util.Arrays.fill(ans, INF);
+        java.util.PriorityQueue<Pair<Long,Integer>> queue = new java.util.PriorityQueue<>();
         queue.add(new Pair<>(0L, start));
 
         while(!queue.isEmpty()){
@@ -85,7 +85,7 @@ class DirectedGraph{
 
     public long[] bellmanford(int start) throws Exception{
         long[] distance = new long[V];
-        Arrays.fill(distance, INF);
+        java.util.Arrays.fill(distance, INF);
         distance[start] = 0;
         for(int i=0; i<V; i++){
             for(Edge e: allEdge){
@@ -116,5 +116,5 @@ class DirectedGraph{
         }
         return ans;
     }
-    public String toString(){return Arrays.toString(out);}
+    public String toString(){return java.util.Arrays.toString(out);}
 }

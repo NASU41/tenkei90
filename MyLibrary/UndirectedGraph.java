@@ -18,7 +18,7 @@ class UndirectedGraph{
             return String.format("[%d<->%d, %d]", u, v, length);
         }
         public int compareTo(Edge o){
-            return Comparator.comparingLong(Edge::getLength)
+            return java.util.Comparator.comparingLong(Edge::getLength)
                    .thenComparingInt(Edge::getLeftVertex)
                    .thenComparingInt(Edge::getRightVertex)
                    .compare(this, o);
@@ -26,16 +26,16 @@ class UndirectedGraph{
     }
 
     int V, E;
-    List<Edge>[] edge;
-    ArrayList<Edge> allEdge;
+    java.util.List<Edge>[] edge;
+    java.util.ArrayList<Edge> allEdge;
 
     public UndirectedGraph(int V){
         this.V = V;
         this.E = 0;
 
-        allEdge = new ArrayList<>();
-        edge = new ArrayList[V];
-        for(int v=0; v<V; v++) edge[v] = new ArrayList<>();
+        allEdge = new java.util.ArrayList<>();
+        edge = new java.util.ArrayList[V];
+        for(int v=0; v<V; v++) edge[v] = new java.util.ArrayList<>();
     }
     public void addEdge(int u, int v, long length){
         E++;
@@ -48,13 +48,13 @@ class UndirectedGraph{
         addEdge(u, v, 1L);
     }
 
-    public List<Edge> getEdges(int v){return edge[v];}
-    public List<Edge> getAllEdges(){return allEdge;}
+    public java.util.List<Edge> getEdges(int v){return edge[v];}
+    public java.util.List<Edge> getAllEdges(){return allEdge;}
 
     public long[] dijkstra(int start){
         long[] ans = new long[V];
-        Arrays.fill(ans, INF);
-        PriorityQueue<Pair<Long,Integer>> queue = new PriorityQueue<>();
+        java.util.Arrays.fill(ans, INF);
+        java.util.PriorityQueue<Pair<Long,Integer>> queue = new java.util.PriorityQueue<>();
         queue.add(new Pair<>(0L, start));
 
         while(!queue.isEmpty()){
@@ -75,7 +75,7 @@ class UndirectedGraph{
     }
     public long[] bellmanford(int start) throws Exception{
         long[] distance = new long[V];
-        Arrays.fill(distance, INF);
+        java.util.Arrays.fill(distance, INF);
         distance[start] = 0;
         for(int i=0; i<V; i++){
             for(Edge e: allEdge){
@@ -112,7 +112,7 @@ class UndirectedGraph{
     public UndirectedGraph kruskal() throws Exception{
         UndirectedGraph ans = new UndirectedGraph(V);
 
-        Collections.sort(allEdge);
+        java.util.Collections.sort(allEdge);
 
         DSU uf = new DSU(V);
         for(Edge e:allEdge){
