@@ -104,6 +104,24 @@ class DirectedGraph{
         return distance;
     }
 
+    public long[] bfs01(int start){
+        long[] ans = new long[V];
+        java.util.Arrays.fill(ans, INF);
+        ans[start] = 0;
+ 
+        java.util.LinkedList<Integer> queue = new java.util.LinkedList<>();
+        queue.add(start);
+        while(!queue.isEmpty()){
+            int v = queue.pollFirst();
+            for(Edge e: outEdges(v)) if(ans[e.getTo()] > ans[v] + e.getLength()){
+                ans[e.getTo()] = ans[v] + e.getLength();
+                if(e.getLength() > 0) queue.addLast(e.getTo());
+                else queue.addFirst(e.getTo());
+            }
+        }
+        return ans;
+    }
+
     public long[][] warshallfloyd(){
         long[][] ans = new long[V][V];
         for(int i=0; i<V; i++)for(int j=0; j<V; j++){

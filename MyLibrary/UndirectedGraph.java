@@ -109,6 +109,24 @@ class UndirectedGraph{
         return ans;
     }
 
+    public long[] bfs01(int start){
+        long[] ans = new long[V];
+        java.util.Arrays.fill(ans, INF);
+        ans[start] = 0;
+ 
+        java.util.LinkedList<Integer> queue = new java.util.LinkedList<>();
+        queue.add(start);
+        while(!queue.isEmpty()){
+            int v = queue.pollFirst();
+            for(Edge e: getEdges(v)) if(ans[e.getOtherVertex(v)] > ans[v] + e.getLength()){
+                ans[e.getOtherVertex(v)] = ans[v] + e.getLength();
+                if(e.getLength() > 0) queue.addLast(e.getOtherVertex(v));
+                else queue.addFirst(e.getOtherVertex(v));
+            }
+        }
+        return ans;
+    }
+
     public UndirectedGraph kruskal() throws Exception{
         UndirectedGraph ans = new UndirectedGraph(V);
 
