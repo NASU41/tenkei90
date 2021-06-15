@@ -1,4 +1,4 @@
-URL: https://atcoder.jp/contests/typical90/submissions/23321411
-size: 10406 Byte
-time: 124 ms
+URL: https://atcoder.jp/contests/apg4b/submissions/23488599
+size: 10020 Byte
+time: 89 ms
 solution: supposed

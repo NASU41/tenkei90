@@ -1,43 +1,22 @@
 import java.util.*;
 
 public class Main {
-    static private int cut(long L, long[] A, long minimumLength){
-        int N = A.length;
 
-        int cut = 0;
-        long current = 0;
-        for(int n=0; n<N; n++){
-            if(A[n] - current >= minimumLength && L - A[n] >= minimumLength){
-                current = A[n];
-                cut++;
-            }
-        }
-        return cut;
-    }
     public static void main(String[] args) throws Exception{
         final ContestScanner sc = new ContestScanner();
         final ContestPrinter pr = new ContestPrinter();
+ 
+        int A = sc.nextInt();
+        int B = sc.nextInt();
 
-        int N = sc.nextInt();
-        long L = sc.nextLong();
-        int K = sc.nextInt();
-        long[] A = sc.nextLongArray(N);
+        int answer = A + B;
 
-        long shortEnough = 0, tooLong = L+1;
-        while(tooLong-shortEnough > 1){
-            long mid = (shortEnough + tooLong) / 2;
-            if(cut(L,A, mid) >= K){
-                shortEnough = mid;
-            }else{
-                tooLong = mid;
-            }
-        }
-        
-        pr.println(shortEnough);
+        pr.println(answer);
 
         pr.close();
     }
 }
+
 
 class ContestScanner {
     private final java.io.InputStream in;
@@ -270,6 +249,10 @@ class ContestPrinter extends java.io.PrintWriter{
 
     public void printArray(int[] array, String separator){
         int n = array.length;
+        if(n==0){
+            super.println();
+            return;
+        }
         for(int i=0; i<n-1; i++){
             super.print(array[i]);
             super.print(separator);
@@ -281,6 +264,10 @@ class ContestPrinter extends java.io.PrintWriter{
     }
     public void printArray(int[] array, String separator, java.util.function.IntUnaryOperator map){
         int n = array.length;
+        if(n==0){
+            super.println();
+            return;
+        }
         for(int i=0; i<n-1; i++){
             super.print(map.applyAsInt(array[i]));
             super.print(separator);
@@ -293,6 +280,10 @@ class ContestPrinter extends java.io.PrintWriter{
 
     public void printArray(long[] array, String separator){
         int n = array.length;
+        if(n==0){
+            super.println();
+            return;
+        }
         for(int i=0; i<n-1; i++){
             super.print(array[i]);
             super.print(separator);
@@ -304,6 +295,10 @@ class ContestPrinter extends java.io.PrintWriter{
     }
     public void printArray(long[] array, String separator, java.util.function.LongUnaryOperator map){
         int n = array.length;
+        if(n==0){
+            super.println();
+            return;
+        }
         for(int i=0; i<n-1; i++){
             super.print(map.applyAsLong(array[i]));
             super.print(separator);
