@@ -1,291 +1,90 @@
 import java.util.*;
 
-class Pair<S extends Comparable<S>, T extends Comparable<T>> implements Comparable<Pair<S,T>>{
-    S first;
-    T second;
-
-    public Pair(S s, T t){
-        first = s;
-        second = t;
-    }
-    public S getFirst(){return first;}
-    public T getSecond(){return second;}
-    public boolean equals(Object another){
-        if(this==another) return true;
-        if(!(another instanceof Pair)) return false;
-        Pair otherPair = (Pair)another;
-        return this.first.equals(otherPair.first) && this.second.equals(otherPair.second);
-    }
-    public int compareTo(Pair<S,T> another){
-        java.util.Comparator<Pair<S,T>> comp1 = java.util.Comparator.comparing(Pair::getFirst);
-        java.util.Comparator<Pair<S,T>> comp2 = comp1.thenComparing(Pair::getSecond);
-        return comp2.compare(this, another);
-    }
-    public int hashCode(){
-        return first.hashCode() * 10007 + second.hashCode();
-    }
-    public String toString(){
-        return String.format("(%s, %s)", first, second);
-    }
-}
-
-class Point extends Pair<Long,Long>{
-    public Point(long x, long y){
-        super(x,y);
-    }
-    public long getX(){return super.getFirst();}
-    public long getY(){return super.getSecond();}    
-}
-class Vector extends Pair<Long,Long>{
-    public Vector(long x, long y){
-        super(x,y);
-    }
-
-    public static Vector between(Point from, Point to){
-        return new Vector(to.getX()-from.getX(), to.getY()-from.getY());
-    }
-    public long getX(){return super.getFirst();}
-    public long getY(){return super.getSecond();}  
-    public Vector plus(Vector v){
-        return new Vector(this.getX()+v.getX(), this.getY()+v.getY());
-    }
-    public Vector neg(){
-        return new Vector(-this.getX(), -this.getY());
-    }    
-    public Vector minus(Vector v){
-        return new Vector(this.getX()-v.getX(), this.getY()-v.getY());
-    }
-    public Vector mult(long a){
-        return new Vector(this.getX()*a, this.getY()*a);
-    }
-    public long dot(Vector v){
-        return this.getX()*v.getX() + this.getY()*v.getY();
-    }
-    public long cross(Vector v){
-        return this.getX()*v.getY() - this.getY()*v.getX();
-    }
-}
-
-class Polygon{
-    ArrayList<Point> vertex;
-    int N;
-
-    public Polygon(List<Point> vertex){
-        this.N = vertex.size();
-        this.vertex = new ArrayList<>();
-        for(Point p:vertex) this.vertex.add(p);
-    }
-    public Polygon(Point[] vertex){
-        this.N = vertex.length;
-        this.vertex = new ArrayList<>();
-        for(Point p:vertex) this.vertex.add(p);
-    }
-
-    static public Polygon convexHull(Point[] point){
-        int N = point.length;
-        Arrays.sort(point);
-        if(point.length < 3) return new Polygon(point);
-
-        List<Point> upper = new ArrayList<>(), lower = new ArrayList<>();
-        upper.add(point[0]); upper.add(point[1]);
-        for(int n=2; n<N; n++){
-            while(upper.size() > 1 &&
-                  Vector.between(upper.get(upper.size()-2), upper.get(upper.size()-1))
-                  .cross(Vector.between(upper.get(upper.size()-2), point[n])) > 0 ){
-                upper.remove(upper.size()-1);
-            }
-            upper.add(point[n]);
-        }
-        lower.add(point[0]); lower.add(point[1]);
-        for(int n=2; n<N; n++){
-            while(lower.size() > 1 &&
-                  Vector.between(lower.get(lower.size()-2), lower.get(lower.size()-1))
-                  .cross(Vector.between(lower.get(lower.size()-2), point[n])) < 0 ){
-                lower.remove(lower.size()-1);
-            }
-            lower.add(point[n]);
-        }
-        
-        List<Point> vertex = new ArrayList<>();
-        for(int i=0; i<upper.size(); i++) vertex.add(upper.get(i));
-        for(int j=lower.size()-2; j>0; j--) vertex.add(lower.get(j));
-        return new Polygon(vertex);
-    }
-    static public Polygon convexHull(List<Point> point){
-        return Polygon.convexHull(point.toArray(new Point[point.size()]));
-    }
-
-    public long areaX2(){
-        long a = 0;
-        for(int n=0; n<N; n++){
-            Point cur = vertex.get(n), next = vertex.get((n+1)%N);
-            a += cur.getX()*next.getY() - cur.getY()*next.getX();
-        } 
-        return Math.abs(a);
-    }
-
-    public ArrayList<Point> getVertexList(){return vertex;}
-
-    public String toString(){
-        return vertex.toString();
-    }
-}
- 
 public class Main {
-    public static void main(String[] args){
-        ContestScanner sc = new ContestScanner();
-        ContestPrinter pr = new ContestPrinter();
- 
-        int N = sc.nextInt();
-        List<Point> pile = new ArrayList<>();
-        for(int n=0; n<N; n++){
-            pile.add(new Point(sc.nextInt(), sc.nextInt()));
-        }
-
-        Polygon farm = Polygon.convexHull(pile);
-        List<Point> vertex = farm.getVertexList();
-
-        int V = vertex.size();
-        long onEdge = 0;
-        for(int v=0; v<V; v++){
-            Point cur = vertex.get(v), next = vertex.get((v+1)%V);
-            onEdge += MathLib.gcd(cur.getX()-next.getX(), cur.getY()-next.getY());
-        }
-
-        long areaX2 = farm.areaX2();
+    public static void main(String[] args) throws Exception{
+        final ContestScanner sc = new ContestScanner();
+        final ContestPrinter pr = new ContestPrinter();
         
-        long internal = (areaX2 - onEdge + 2) / 2;
+        int H = sc.nextInt(), W = sc.nextInt();
+        int rs = sc.nextInt()-1, cs = sc.nextInt()-1;
+        int rt = sc.nextInt()-1, ct = sc.nextInt()-1;
+        char[][] board = sc.nextCharMatrix(H, W);
 
-        pr.println(internal + onEdge - N);
+        long[] distance = new long[4*H*W];
+        Arrays.fill(distance, 5_000_000_000_000_000L);
+        LinkedList<Integer> queue = new LinkedList<>();
+        for(int d=0; d<4; d++){
+            queue.add(d*H*W+rs*W+cs);
+            distance[d*H*W+rs*W+cs] = 0;
+        }
+        while(!queue.isEmpty()){
+            int top = queue.pollFirst();
+            int d = top / (H*W);
+            int h = (top-d*H*W) / W;
+            int w = top % W;
 
+            if(h>0   && board[h-1][w]=='.'){
+                if(d==0){
+                    if(distance[0*H*W+(h-1)*W+w] > distance[top]){
+                        distance[0*H*W+(h-1)*W+w] = distance[top];
+                        queue.addFirst(0*H*W+(h-1)*W+w);
+                    }                    
+                }else{
+                    if(distance[0*H*W+(h-1)*W+w] > distance[top]+1){
+                        distance[0*H*W+(h-1)*W+w] = distance[top]+1;
+                        queue.addLast(0*H*W+(h-1)*W+w);
+                    }                    
+                }
+            }
+            if(w<W-1 && board[h][w+1]=='.'){
+                if(d==1){
+                    if(distance[1*H*W+h    *W+(w+1)] > distance[top]){
+                        distance[1*H*W+h    *W+(w+1)] = distance[top];
+                        queue.addFirst(1*H*W+h    *W+(w+1));
+                    }                    
+                }else{
+                    if(distance[1*H*W+h    *W+(w+1)] > distance[top]+1){
+                        distance[1*H*W+h    *W+(w+1)] = distance[top]+1;
+                        queue.addLast(1*H*W+h    *W+(w+1));
+                    }                    
+                }
+            }
+            if(h<H-1 && board[h+1][w]=='.'){
+                if(d==2){
+                    if(distance[2*H*W+(h+1)*W+w] > distance[top]){
+                        distance[2*H*W+(h+1)*W+w] = distance[top];
+                        queue.addFirst(2*H*W+(h+1)*W+w);
+                    }
+                }else{
+                    if(distance[2*H*W+(h+1)*W+w] > distance[top]+1){
+                        distance[2*H*W+(h+1)*W+w] = distance[top]+1;
+                        queue.addLast(2*H*W+(h+1)*W+w);
+                    }
+                }
+            }
+            if(w>0   && board[h][w-1]=='.'){
+                if(d==3){
+                    if(distance[3*H*W+h    *W+(w-1)] > distance[top]){
+                        distance[3*H*W+h    *W+(w-1)] = distance[top];
+                        queue.addFirst(3*H*W+h    *W+(w-1));
+                    }                    
+                }else{
+                    if(distance[3*H*W+h    *W+(w-1)] > distance[top]+1){
+                        distance[3*H*W+h    *W+(w-1)] = distance[top]+1;
+                        queue.addLast(3*H*W+h    *W+(w-1));
+                    }   
+                }
+            }
+        }
+
+        long ans = 5_000_000_000_000_000L;
+        for(int d=0; d<4; d++) ans = Math.min(ans, distance[d*H*W + rt*W + ct]);
+        pr.println(ans);
+        
         pr.close();
     }
 }
 
-class MathLib{
-    private static long safe_mod(long x, long m){
-        x %= m;
-        if(x<0) x += m;
-        return x;
-    }
-
-    private static long[] inv_gcd(long a, long b){
-        a = safe_mod(a, b);
-        if(a==0) return new long[]{b,0};
-
-        long s=b, t=a;
-        long m0=0, m1=1;
-        while(t>0){
-            long u = s/t;
-            s -= t*u;
-            m0 -= m1*u;
-            long tmp = s; s = t; t = tmp;
-            tmp = m0; m0 = m1; m1 = tmp;
-        }
-        if(m0<0) m0 += b/s;
-        return new long[]{s,m0};
-    }
-
-    public static long gcd(long... a){
-        if(a.length == 0) return 0;
-        long r = java.lang.Math.abs(a[0]);
-        for(int i=1; i<a.length; i++){
-            if(a[i]!=0) {
-                if(r==0) r = java.lang.Math.abs(a[i]);
-                else r = inv_gcd(r, java.lang.Math.abs(a[i]))[0];
-            }
-        }
-        return r;
-    }
-
-    public static long lcm(long... a){
-        if(a.length == 0) return 0;
-        long r = java.lang.Math.abs(a[0]);
-        for(int i=1; i<a.length; i++){
-            r = r / gcd(r,java.lang.Math.abs(a[i])) * java.lang.Math.abs(a[i]);
-        }
-        return r;
-    }
-
-    public static long pow_mod(long x, long n, int m){
-        assert n >= 0;
-        assert m >= 1;
-        if(m == 1)return 0L;
-        x = safe_mod(x, m);
-        long ans = 1L;
-        while(n > 0){
-            if((n&1) == 1) ans = (ans * x) % m;
-            x = (x*x) % m;
-            n >>>= 1;
-        }
-        return ans;
-    }
-
-    public static long[] crt(long[] r, long[] m){
-        assert(r.length == m.length);
-        int n = r.length;
-
-        long r0=0, m0=1;
-        for(int i=0; i<n; i++){
-            assert(1 <= m[i]);
-            long r1 = safe_mod(r[i], m[i]), m1 = m[i];
-            if(m0 < m1){
-                long tmp = r0; r0 = r1; r1 = tmp;
-                tmp = m0; m0 = m1; m1 = tmp;
-            }
-            if(m0%m1 == 0){
-                if(r0%m1 != r1) return new long[]{0,0};
-                continue;
-            }
-
-            long[] ig = inv_gcd(m0, m1);
-            long g = ig[0], im = ig[1];
-
-            long u1 = m1/g;
-            if((r1-r0)%g != 0) return new long[]{0,0};
-
-            long x = (r1-r0) / g % u1 * im % u1;
-
-            r0 += x * m0;
-            m0 *= u1;
-            if(r0<0) r0 += m0;
-            //System.err.printf("%d %d\n", r0, m0);
-        } 
-        return new long[]{r0, m0};
-    }
-    public static long floor_sum(long n, long m, long a, long b){
-        long ans = 0;
-        if(a >= m){
-            ans += (n-1) * n * (a/m) / 2;
-            a %= m;
-        }
-        if(b >= m){
-            ans += n * (b/m);
-            b %= m;
-        }
-
-        long y_max = (a*n+b) / m;
-        long x_max = y_max * m - b;
-        if(y_max == 0) return ans;
-        ans += (n - (x_max+a-1)/a) * y_max;
-        ans += floor_sum(y_max, a, m, (a-x_max%a)%a);
-        return ans;
-    }
-
-    public static java.util.ArrayList<Long> divisors(long n){
-        java.util.ArrayList<Long> divisors = new ArrayList<>();
-        java.util.ArrayList<Long> large = new ArrayList<>();
-
-        for(long i=1; i*i<=n; i++) if(n%i==0){
-            divisors.add(i);
-            if(i*i<n) large.add(n/i);
-        }
-        for(int p=large.size()-1; p>=0; p--){
-            divisors.add(large.get(p));
-        }
-        return divisors;
-    }
-}
 
 class ContestScanner {
     private final java.io.InputStream in;
