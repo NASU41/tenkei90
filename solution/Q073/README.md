@@ -1,4 +1,4 @@
-# 072 Loop Railway Plan
+# 073 We Need Both a and b
 
 ## 解法
 入力された木を頂点0を根とする根付き木とみなし, その上でDPを行います.
