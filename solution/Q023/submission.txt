@@ -1,0 +1,4 @@
+URL: https://atcoder.jp/contests/typical90/submissions/23829114
+size: 27451 Byte
+time: 687 ms
+solution: cheat
